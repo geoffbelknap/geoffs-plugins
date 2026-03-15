@@ -1,7 +1,7 @@
 {
   "name": "ask-framework",
-  "version": "1.0.0",
-  "description": "ASK (Agent Security Framework) compliance reviewer and design assistant for AI agent security architecture.",
+  "version": "2.0.0",
+  "description": "ASK (Agent Security Framework) compliance reviewer and design assistant for AI agent security architecture. Updated for ASK 2026.03 — 24 tenets, cognitive model, trust spectrum.",
   "author": {
     "name": "Geoff Belknap"
   },
