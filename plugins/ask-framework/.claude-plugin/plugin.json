@@ -1,0 +1,9 @@
+{
+  "name": "ask-framework",
+  "version": "1.0.0",
+  "description": "ASK (Agent Security Framework) compliance reviewer and design assistant for AI agent security architecture.",
+  "author": {
+    "name": "Geoff Belknap"
+  },
+  "homepage": "https://github.com/geoffbelknap/ask"
+}

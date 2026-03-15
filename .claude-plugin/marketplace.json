@@ -1,0 +1,29 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "geoffs-plugins",
+  "owner": {
+    "name": "Geoff Belknap",
+    "email": "geoff@belknap.io"
+  },
+  "plugins": [
+    {
+      "name": "ask-framework",
+      "description": "ASK (Agent Security Framework) compliance reviewer and design assistant. Reviews code, specs, and architectures against 22 ASK tenets, analyzes XPIA kill chain posture, identifies enforcement gaps, and generates ASK-compliant configurations for Mind, Gateway, Egress, and Enforcer components.",
+      "source": "./plugins/ask-framework",
+      "version": "1.0.0",
+      "author": {
+        "name": "Geoff Belknap"
+      },
+      "category": "security",
+      "keywords": [
+        "security",
+        "agent-security",
+        "xpia",
+        "prompt-injection",
+        "governance",
+        "compliance"
+      ],
+      "homepage": "https://github.com/geoffbelknap/ask"
+    }
+  ]
+}
