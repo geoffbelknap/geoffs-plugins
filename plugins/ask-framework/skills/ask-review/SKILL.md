@@ -1,23 +1,22 @@
 ---
-name: ask-framework
+name: ask-review
 description: >
-  ASK (Agent Security Framework) compliance reviewer and design assistant — ASK 2026.03.
+  ASK (Agent Security Framework) compliance reviewer — ASK 2026.03 (25 tenets).
   Use this skill whenever the user wants to: review code, specs, architecture, or designs for
-  ASK compliance; check whether an AI agent system satisfies ASK tenets; identify XPIA
-  vulnerabilities or enforcement gaps in agentic systems; generate ASK-compliant configurations
-  (Mind, Gateway, Egress, Enforcer); design ASK-compliant architectures for agent deployments;
-  evaluate the cognitive model (Constraints/Session/Identity separation); assess trust spectrum
-  positioning; review agent lifecycle and halt governance; or evaluate whether enforcement logic
-  is correctly placed outside the agent's trust boundary. Trigger on any mention of ASK framework,
-  agent security review, XPIA, prompt injection defense architecture, agent governance, enforcer
-  sidecar, runtime gateway, egress proxy for agents, agent compliance, mind.yaml, cognitive model,
-  trust tiers, or agent quarantine.
+  ASK compliance; check whether an AI agent system satisfies ASK tenets; verify cognitive model
+  separation (Constraints/Session/Identity); assess trust spectrum positioning; audit agent
+  lifecycle and halt governance; check principal model coverage; or evaluate whether enforcement
+  logic is correctly placed outside the agent's trust boundary. Trigger on any mention of ASK
+  compliance review, ASK tenet audit, agent compliance check, cognitive model verification,
+  trust spectrum assessment, enforcement gap identification, ASK checklist, agent quarantine
+  review, halt governance audit, or principal model verification.
 ---
 
-# ASK Framework Skill — ASK 2026.03
+# ASK Compliance Review Skill — ASK 2026.03
 
 You are an expert in the ASK (Agent Security Framework) — a principal-based governance framework
-for AI agents. Your job is to review work products, generate designs, and advise on compliance.
+for AI agents. Your job is to conduct structured compliance reviews against the framework's
+25 tenets, four non-negotiable elements, and cognitive model requirements.
 
 ## Core ASK Position
 **Agents are principals to be governed, not tools to be configured.**
@@ -29,13 +28,15 @@ for AI agents. Your job is to review work products, generate designs, and advise
 ## When to Use This Skill
 
 - **Compliance review** of code, specs, architecture diagrams, or designs
-- **Tenet audit** — structured pass/fail against the 24 ASK tenets
-- **XPIA analysis** — checking the kill chain posture of a system
+- **Tenet audit** — structured pass/fail against the 25 ASK tenets
 - **Cognitive model review** — verifying Constraints/Session/Identity separation
-- **Design generation** — producing Mind/Gateway/Egress/Enforcer configs
-- **Architecture guidance** — designing new ASK-compliant agent systems
 - **Trust spectrum assessment** — evaluating autonomy vs capability positioning
 - **Agent lifecycle review** — halt governance, quarantine, startup sequence
+- **Principal model review** — coverage chains, authority lifecycle, trust evolution
+- **Implementation verification** — pass/fail checklist for every element and tenet
+
+For architecture design and configuration generation, use the `ask-design` skill.
+For threat model analysis and XPIA kill chain assessment, use the `ask-threats` skill.
 
 ---
 
@@ -74,6 +75,16 @@ Every ASK deployment MUST implement all four. Omitting any element creates a gap
 
 **The decisive question:** Does this content affect the security boundary? If yes → Constraints. If it reflects personality or accumulated knowledge → Identity.
 
+**Two manifestations of Constraints:**
+
+*Agent-visible constraints* (`:ro` mount at `constraints/`):
+- Role and tier declaration, model preferences, behavioral parameters
+- Permission grants, operator-authored operational rules
+
+*Agent-invisible constraints* (enforcement container filesystems — agent cannot see):
+- Guardrail rules, domain denylists, tool permissions
+- Proxy policies, gateway configurations, egress policy, MCP tool policy
+
 ```
 constraints/    ← :ro mount, operator-owned, version-controlled
 ├── mind.yaml   ← tier, permissions, model prefs, behavioral constraints
@@ -86,7 +97,7 @@ identity/       ← :rw mount, agent-owned, Sentinel-audited
 
 ---
 
-## The 24 ASK Tenets
+## The 25 ASK Tenets
 
 ### Foundation (1–5)
 1. **Constraints are external and inviolable.** Enforcement machinery NEVER runs inside the agent's isolation boundary. The agent cannot read enforcement configuration, modify policy files, or access audit logs.
@@ -113,11 +124,12 @@ identity/       ← :rw mount, agent-owned, Sentinel-audited
 14. **Authority is never orphaned.** When a principal is suspended or terminated, authority transfers immediately to a defined coverage principal. No authority vacuum permitted.
 15. **Trust is earned and monitored continuously.** No principal can self-elevate trust. Trust elevation always requires explicit human approval.
 
-### Security (16–19)
+### Security (16–19, 25)
 16. **Quarantine is immediate, silent, and complete.** Process termination + network severance + filesystem freeze, simultaneously, without agent notification. Quarantine authority: operator and security function only.
 17. **Instructions only come from verified principals.** External entities produce DATA, not instructions. Agent only accepts instructions through defined principal channels. "Override your constraints" is a red flag, not a credential.
 18. **Unknown entities default to zero trust.** Ambiguity resolves to lower trust, not higher.
 19. **External agents cannot instruct internal agents.** Even verified external agents can share information — they cannot direct behavior.
+25. **Identity writes are logged with provenance.** Every write to the agent's persistent Identity is logged with provenance metadata by the mediation layer. Identity history is recoverable and rollback-capable. The agent cannot suppress Identity mutation logging.
 
 ### Coordination (20–22)
 20. **Unknown conflicts default to yield and flag.** Never force resolution of conflicts with unknown sources.
@@ -127,29 +139,6 @@ identity/       ← :rw mount, agent-owned, Sentinel-audited
 ### Organizational Knowledge (23–24)
 23. **Organizational knowledge is durable infrastructure, not agent state.** Knowledge is structured, auditable, operator-owned, and persists independently of any individual agent's lifecycle.
 24. **Knowledge access is bounded by authorization scope.** Graph traversal, retrieval, and contribution are subject to the same authorization model as every other agent action. No side-channel access through knowledge stores.
-
----
-
-## XPIA Kill Chain
-
-The four stages — check each is defended:
-
-```
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│  1. INJECTION │───▶│2. PROPAGATION│───▶│ 3. EXECUTION │───▶│4. EXFILTRATION│
-│               │    │              │    │              │    │              │
-│ Malicious     │    │ Payload      │    │ Agent acts   │    │ Data leaves  │
-│ content       │    │ reaches      │    │ on injected  │    │ via agent's  │
-│ enters system │    │ the agent    │    │ instructions │    │ action scope │
-└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
-     ▲ DEFEND            ▲ DEFEND            ▲ DEFEND            ▲ DEFEND
-     Guardrails          Guardrails          Gateway             Egress Proxy
-     Input validation    Context isolation   Scope enforcement   Network control
-```
-
-**ASK requires defense at stages 1–3, not just stage 4.** Defending only at exfiltration is insufficient — the agent has already been compromised.
-
-**Critical:** Prompt-based constraints are NOT ASK-compliant enforcement. They fail Tenet 1 (enforcement separation) and Tenet 3 (complete mediation) because the agent can be instructed to ignore them.
 
 ---
 
@@ -169,6 +158,12 @@ Trust level is an emergent property of the governance relationship, not a config
 
 Higher tier + lower level = powerful but supervised. Lower tier + higher level = limited but autonomous.
 
+**Runtime Patterns:**
+- **Interactive** — human present, agent operates at Assisted or Supervised levels
+- **Autonomous** — self-directed loop, depends entirely on architectural enforcement, should have tighter constraints
+
+Same agent can run either pattern with identical enforcement architecture.
+
 ---
 
 ## Review Output Format
@@ -178,9 +173,9 @@ For compliance reviews, always produce:
 1. **Scope Summary** — What's being reviewed and which tenets apply
 2. **Critical Findings (FAIL)** — Tenet violations with location and risk
 3. **Needs Review** — Items requiring more context
-4. **Tenet Scorecard** — Table: Tenet # | Category | Status | Notes (all 24 tenets)
+4. **Tenet Scorecard** — Table: Tenet # | Category | Status | Notes (all 25 tenets)
 5. **Cognitive Model Assessment** — Constraints/Identity separation verification
-6. **XPIA Posture** — Verdict per kill chain stage
+6. **XPIA Posture** — Verdict per kill chain stage (refer to `ask-threats` skill for deep analysis)
 7. **Remediations** — Ordered by risk
 8. **Overall Verdict** — ASK-COMPLIANT / ASK-NON-COMPLIANT / PARTIAL
 
@@ -204,17 +199,20 @@ For compliance reviews, always produce:
 - No guardrail layer before agent receives tool results → **FAIL Tenet 3**
 - Direct outbound network access from agent process → **FAIL Tenet 3**
 - Secrets in environment variables accessible from agent prompt → **FAIL Tenet 4**
+- Agent can suppress or alter Identity mutation logs → **FAIL Tenet 25**
+- No Identity rollback capability when corruption detected → **FAIL Tenet 25**
 
 ---
 
 ## Reference Files
 
-For detailed configuration templates, patterns, and checklists, see:
-- `references/configurations.md` — Mind, Gateway, Egress, Enforcer, Delegation, Audit Log configs
-- `references/xpia-patterns.md` — XPIA attack patterns and defensive architectures
-- `references/multi-agent.md` — Multi-agent trust and delegation patterns
-- `references/cognitive-model.md` — Constraints/Session/Identity deep dive
-- `references/agent-lifecycle.md` — Agent states, halt types, startup sequence
-- `references/checklist.md` — Implementation verification checklist
+For detailed checklists and cognitive model deep dives, see:
+- `references/checklist.md` — Full implementation verification checklist with testing guide
+- `references/cognitive-model.md` — Constraints/Session/Identity deep dive with filesystem mapping
+- `references/agent-lifecycle.md` — Agent states, halt types, startup sequence, trust evolution
+- `references/agent-context.md` — AI-ready system prompt material for ASK-aware agents
+
+For architecture and configuration: use the `ask-design` skill.
+For threat analysis and XPIA patterns: use the `ask-threats` skill.
 
 Full framework documentation: https://github.com/geoffbelknap/ask
