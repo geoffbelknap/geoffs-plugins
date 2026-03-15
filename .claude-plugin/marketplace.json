@@ -7,9 +7,9 @@
   "plugins": [
     {
       "name": "ask-framework",
-      "description": "ASK (Agent Security Framework) compliance reviewer and design assistant. Reviews code, specs, and architectures against 22 ASK tenets, analyzes XPIA kill chain posture, identifies enforcement gaps, and generates ASK-compliant configurations for Mind, Gateway, Egress, and Enforcer components.",
+      "description": "ASK (Agent Security Framework) compliance reviewer and design assistant — ASK 2026.03. Reviews code, specs, and architectures against 24 ASK tenets, analyzes XPIA kill chain posture, verifies cognitive model separation (Constraints/Session/Identity), evaluates trust spectrum positioning, and generates ASK-compliant configurations for Mind, Gateway, Egress, and Enforcer components.",
       "source": "./plugins/ask-framework",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "author": {
         "name": "Geoff Belknap"
       },
@@ -20,7 +20,9 @@
         "xpia",
         "prompt-injection",
         "governance",
-        "compliance"
+        "compliance",
+        "cognitive-model",
+        "trust-spectrum"
       ],
       "homepage": "https://github.com/geoffbelknap/ask"
     }
