@@ -112,6 +112,7 @@ Answer Yes or No to each. "No" is a framework violation.
 | 22 | Coordination | Quarantine does not apply to human principals | |
 | 23 | Org Knowledge | Knowledge is durable infrastructure, not agent state | |
 | 24 | Org Knowledge | Knowledge access bounded by authorization scope | |
+| 25 | Security | Every Identity write logged with provenance; history recoverable and rollbackable | |
 
 ---
 
