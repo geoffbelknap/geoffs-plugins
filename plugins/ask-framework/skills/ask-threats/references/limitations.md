@@ -104,6 +104,6 @@ The visible Constraints layer is an attack surface map. A compromised agent can 
 - Enforcement supply chain (compromised proxy images, gateway vulnerabilities) undermines the entire model — production deployments require signed images, version pinning, vulnerability scanning
 - Mediation network security assumed trusted; enterprise-scale deployments spanning multiple hosts require mTLS, network policy, component authentication
 - Model-level attacks (adversarially fine-tuned LLMs) not addressed by runtime architecture
-- Monitoring (Sentinel) is itself an XPIA target — consumes adversary-influenced data
+- Monitoring (security monitor) is itself an XPIA target — consumes adversary-influenced data
 
 Defense-in-depth architecture enables resilience as threats evolve, but the framework explicitly acknowledges incompleteness.

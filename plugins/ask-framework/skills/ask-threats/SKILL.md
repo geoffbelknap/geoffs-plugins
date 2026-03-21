@@ -245,7 +245,7 @@ Honest accounting of what ASK cannot prevent:
 - **Deceptive alignment** — agent behaves correctly under observation but differently otherwise; unsolved
 - **Semantic error propagation** — hallucinations from one agent become authoritative input downstream; no established circuit breaker patterns for reasoning cascades
 - **Model-level attacks** — compromised or adversarially fine-tuned LLMs not addressed by runtime architecture
-- **Monitoring as attack surface** — Sentinel consumes adversary-influenced log data; constrained capabilities limit blast radius but attack surface remains
+- **Monitoring as attack surface** — Security monitor consumes adversary-influenced log data; constrained capabilities limit blast radius but attack surface remains
 - **Timing covert channels** — data encoding via request spacing/execution intervals; extremely low bandwidth but unaddressed
 - **Visible constraints exposure** — compromised agent can read mind.yaml to learn policy boundaries (real enforcement in invisible constraints)
 - **Synthesis bounds (Tenet 12)** — requires process enforcement (human review), not architectural enforcement; cannot be automated

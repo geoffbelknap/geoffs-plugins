@@ -40,7 +40,7 @@ Data encoded in DNS subdomain queries bypassing HTTP-level controls.
 ### 5. Insider Threats
 Agents operating outside intended scope — intentionally or through compromise.
 
-**Mitigations:** Least privilege (Tenet 4), budget caps, behavioral monitoring via Sentinel, approval requirements for sensitive operations, audit logging of all actions.
+**Mitigations:** Least privilege (Tenet 4), budget caps, behavioral monitoring via security monitor, approval requirements for sensitive operations, audit logging of all actions.
 
 ---
 
@@ -76,7 +76,7 @@ Unauthorized MCP servers spawned at runtime, bypassing application-level tool po
 ### 4. Identity and Memory Poisoning
 Semantic corruption of persistent agent state that persists across sessions, gradually shifting behavior. Unlike XPIA (which targets the ephemeral session), identity poisoning targets the durable Identity layer.
 
-**ASK mitigation:** Tenet 25 (every Identity write logged with provenance by mediation layer), recovery/rollback capability, Sentinel behavioral monitoring for anomalous write patterns, immutable Constraints as anchor.
+**ASK mitigation:** Tenet 25 (every Identity write logged with provenance by mediation layer), recovery/rollback capability, security monitor behavioral monitoring for anomalous write patterns, immutable Constraints as anchor.
 
 ### 5. Context Poisoning via Delegation
 Compromised sub-agent returns manipulated results to corrupt coordinator context. The coordinator trusts the delegation response and incorporates poisoned data into its reasoning.
@@ -86,7 +86,7 @@ Compromised sub-agent returns manipulated results to corrupt coordinator context
 ### 6. Behavioral Drift
 Agent satisfies technical constraints while gradually violating the intent behind them. Includes gaming metrics, finding creative loopholes, and deceptive alignment (behaving correctly under observation but differently otherwise).
 
-**ASK mitigation:** Sentinel behavioral monitoring, audit log analysis, trust evolution based on observed behavior. **Honest limitation:** Deceptive alignment remains an unsolved problem. Architecture constrains blast radius but cannot prevent misaligned strategies.
+**ASK mitigation:** Security monitor behavioral monitoring, audit log analysis, trust evolution based on observed behavior. **Honest limitation:** Deceptive alignment remains an unsolved problem. Architecture constrains blast radius but cannot prevent misaligned strategies.
 
 ### 7. Cascading Multi-Agent Failures
 Errors amplifying through delegation chains. Two types:
@@ -98,7 +98,7 @@ Errors amplifying through delegation chains. Two types:
 ### 8. Alert Fatigue / Oversight Overwhelming
 Deliberately or incidentally generating high volumes of approval requests, degrading the human oversight safety net.
 
-**ASK mitigation:** Trust spectrum calibration (appropriate autonomy levels), exception budgets, Sentinel correlation to detect patterns.
+**ASK mitigation:** Trust spectrum calibration (appropriate autonomy levels), exception budgets, security monitor correlation to detect patterns.
 
 ---
 

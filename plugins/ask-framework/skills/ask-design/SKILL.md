@@ -51,7 +51,7 @@ The defense architecture uses independent isolation boundaries. No layer shares 
 | 4 | **Enforcer Sidecar** | Per-agent HTTP proxy — credential mediation, routing, per-request audit |
 | 5 | **Container Hardening** | Read-only filesystem, capability dropping, no-new-privileges, non-root |
 | 6 | **Runtime Gateway** | File/command/MCP mediation via FUSE, shell shims, seccomp, Landlock |
-| 7 | **Continuous Monitoring** | Sentinel (function agent) — anomaly detection across all audit logs |
+| 7 | **Continuous Monitoring** | Security monitor (function agent) — anomaly detection across all audit logs |
 
 **Key principles:**
 - Each layer runs in its own isolation boundary
@@ -103,7 +103,7 @@ Three required capabilities:
 - **Tool permission guards** — explicit allowlist, default-deny
 - **MCP policy enforcement** — gateway-level (OS-level), not just application-level
 
-### Sentinel
+### Security Monitor
 
 Function agent with read-only access to all audit logs:
 - Baseline analysis and behavioral anomaly detection
@@ -170,7 +170,7 @@ Each agent gets its own container, scoped API key, egress policy, and network se
 |---|---|---|
 | **Worker** | Does the work | High capability within scope, isolated from other agents |
 | **Coordinator** | Plans, delegates, synthesizes | Cannot act directly in worker workspaces; constrained by Tenets 11–12 |
-| **Function** | Oversight and governance (e.g., Sentinel) | Cross-boundary visibility, constrained action capability |
+| **Function** | Oversight and governance (e.g., security monitor) | Cross-boundary visibility, constrained action capability |
 
 ### Delegation Bus
 
@@ -246,7 +246,7 @@ Every traditional endpoint security control has an ASK equivalent:
 | MDM / UEM | Workspace provisioning, container hardening |
 | Web gateway / proxy | Egress proxy with domain filtering |
 | DLP | Egress proxy + guardrails + response scanning |
-| EDR | Sentinel + audit log correlation |
+| EDR | Security monitor + audit log correlation |
 | Application allowlisting | Gateway command/tool policy |
 | Credential management | Enforcer credential mediation |
 

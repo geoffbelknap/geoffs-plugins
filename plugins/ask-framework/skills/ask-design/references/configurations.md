@@ -213,7 +213,7 @@ files:
     read: allow
     write: allow
     execute: deny
-    audit: true                 # All writes logged to Sentinel
+    audit: true                 # All writes logged to security monitor
 
   - path: "**/.env"
     read: deny
@@ -384,19 +384,17 @@ routes:
       port: 3128
 
 # --- Service Credential Swap ---
-# Agent sends X-Agency-Service header with scoped token.
+# Agent sends a scoped service token identifying the grant.
 # Enforcer swaps for real credential before forwarding.
 service_grants:
   - service: "github"
-    header: "X-Agency-Service"
-    token_match: "github:dev-assistant-01"
+    token_match: "github:dev-assistant-01"   # scoped token from agent
     credential_ref: "secrets/github-api-key"
     upstream_header: "Authorization"
     upstream_format: "token {credential}"
 
   - service: "search-api"
-    header: "X-Agency-Service"
-    token_match: "search:dev-assistant-01"
+    token_match: "search:dev-assistant-01"   # scoped token from agent
     credential_ref: "secrets/search-api-key"
     upstream_header: "X-API-Key"
     upstream_format: "{credential}"
