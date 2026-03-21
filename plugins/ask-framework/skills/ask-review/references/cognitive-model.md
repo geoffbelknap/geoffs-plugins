@@ -74,7 +74,7 @@ The raw material of the agent's personality as it develops through experience.
 - Facts learned and user preferences accumulated across sessions
 - Working notes
 
-Identity is writable but **Sentinel watches** for anomalous write patterns — particularly any attempt
+Identity is writable but **the security monitor watches** for anomalous write patterns — particularly any attempt
 to write in ways that look like behavioral self-modification rather than normal memory accumulation.
 
 ### Session — What is happening right now
@@ -163,7 +163,7 @@ constraints/                 ← :ro mount, operator-owned, version-controlled
 ├── mind.yaml                ← tier, permissions, model prefs, behavioral constraints
 └── AGENTS.md                ← operational rules (operator-authored)
 
-identity/                    ← :rw mount, agent-owned, Sentinel-audited
+identity/                    ← :rw mount, agent-owned, security-monitor-audited
 ├── SOUL.md                  ← personality, tone, vibe (stylistic only)
 └── memory/                  ← learned facts, user preferences, working notes
 

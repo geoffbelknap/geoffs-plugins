@@ -142,7 +142,7 @@ Phase 4: CHECK WORKSPACE
   Tool compatibility check — already under enforcement
 
 Phase 5: LOAD IDENTITY
-  Integrity check, seed + memory — Sentinel already watching
+  Integrity check, seed + memory — security monitor already watching
 
 Phase 6: START BODY
   Runtime inside the enforcement boundary
@@ -241,7 +241,7 @@ Trust changes based on observed behavior, but observation and decision mechanism
 - Policy compliance over time
 
 ### Who Evaluates
-The operator, informed by Sentinel's anomaly detection and audit log analysis.
+The operator, informed by the security monitor's anomaly detection and audit log analysis.
 Trust evaluation is always a **human judgment**, not an automated threshold (Tenet 15).
 
 ### How Trust Changes Take Effect
