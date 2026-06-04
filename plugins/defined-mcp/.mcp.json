@@ -1,0 +1,9 @@
+{
+  "defined-nebula": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "github:geoffbelknap/defined-mcp"
+    ]
+  }
+}
