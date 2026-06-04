@@ -22,7 +22,9 @@ Then install the plugin you want:
 
 ### [ask-framework](./plugins/ask-framework)
 
-ASK compliance reviewer, architecture designer, and threat analyst for agentic systems.
+
+
+[ASK](https://askframework.org/) compliance reviewer, architecture designer, and threat analyst for agentic systems.
 
 Use it to audit agent architectures against ASK, design enforcement layers, verify cognitive model boundaries, assess XPIA posture, and generate compliant configurations.
 
@@ -42,7 +44,7 @@ Use it to score AX maturity, identify implementation gaps, recommend concrete re
 
 ### [defined-mcp](./plugins/defined-mcp)
 
-Defined Networking / Managed Nebula MCP integration for coding and DevOps agents.
+[Defined Networking](https://www.defined.net/) / Managed Nebula MCP integration for coding and DevOps agents.
 
 Use it to inspect and manage Defined Networking infrastructure, including networks, hosts, enrollment codes, roles, firewall rules, tags, routes, audit logs, downloads, and host diagnostics.
 
