@@ -1,0 +1,9 @@
+{
+  "name": "defined-mcp",
+  "version": "1.0.0",
+  "description": "Defined Networking / Managed Nebula MCP integration for coding and DevOps agents.",
+  "author": {
+    "name": "Geoff Belknap"
+  },
+  "homepage": "https://github.com/geoffbelknap/defined-mcp"
+}

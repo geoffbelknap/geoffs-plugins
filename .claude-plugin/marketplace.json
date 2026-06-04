@@ -52,6 +52,29 @@
         "trajectory-evals",
         "agents"
       ]
+    },
+    {
+      "name": "defined-mcp",
+      "description": "Defined Networking / Managed Nebula MCP integration for coding and DevOps agents. Provides agent-accessible tools for networks, hosts, enrollment codes, roles, firewall rules, tags, routes, audit logs, downloads, and host diagnostics.",
+      "source": "./plugins/defined-mcp",
+      "version": "1.0.0",
+      "author": {
+        "name": "Geoff Belknap"
+      },
+      "category": "developer-tools",
+      "keywords": [
+        "mcp",
+        "defined-networking",
+        "managed-nebula",
+        "nebula",
+        "networking",
+        "vpn",
+        "devops",
+        "infrastructure",
+        "agents",
+        "claude-code"
+      ],
+      "homepage": "https://github.com/geoffbelknap/defined-mcp"
     }
   ]
 }
