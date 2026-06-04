@@ -7,6 +7,7 @@ A Claude Code plugin marketplace by Geoff Belknap.
 | Plugin | Description |
 |---|---|
 | **[ask-framework](./plugins/ask-framework)** | ASK (Agent Security Framework) compliance reviewer, architecture designer, and threat analyst — audit agent architectures against 25 security tenets, design seven-layer enforcement architectures, verify cognitive model separation, assess XPIA kill chain posture, analyze traditional/novel/hybrid threats, and generate compliant configurations. Updated for ASK 2026.03. |
+| **[ax-optimizer](./plugins/ax-optimizer)** | Agent Experience (AX) reviewer for CLIs, MCP servers, and agent-facing tool surfaces — score AX maturity, identify implementation gaps, recommend concrete refactors, and design trajectory tests. |
 
 ## Installation
 
@@ -16,6 +17,7 @@ A Claude Code plugin marketplace by Geoff Belknap.
 
 # Install a plugin
 /plugin install ask-framework@geoffs-plugins
+/plugin install ax-optimizer@geoffs-plugins
 ```
 
 ## About ASK
