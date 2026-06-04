@@ -1,0 +1,8 @@
+{
+  "name": "ax-optimizer",
+  "version": "0.1.0",
+  "description": "AX Optimization reviewer for CLIs, MCP servers, and agent-facing tool surfaces. Produces maturity scores, implementation findings, refactor roadmaps, and trajectory test plans for Agent Experience.",
+  "author": {
+    "name": "Geoff Belknap"
+  }
+}

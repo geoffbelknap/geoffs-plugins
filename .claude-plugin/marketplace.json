@@ -29,6 +29,29 @@
         "owasp"
       ],
       "homepage": "https://github.com/geoffbelknap/ask"
+    },
+    {
+      "name": "ax-optimizer",
+      "description": "AX Optimization reviewer for CLIs, MCP servers, and agent-facing tool surfaces. Produces maturity scores, implementation findings, refactor roadmaps, and trajectory test plans for Agent Experience.",
+      "source": "./plugins/ax-optimizer",
+      "version": "0.1.0",
+      "author": {
+        "name": "Geoff Belknap"
+      },
+      "category": "developer-tools",
+      "keywords": [
+        "agent-experience",
+        "ax",
+        "mcp",
+        "cli",
+        "developer-tools",
+        "tooling",
+        "schema",
+        "structured-output",
+        "error-contracts",
+        "trajectory-evals",
+        "agents"
+      ]
     }
   ]
 }
