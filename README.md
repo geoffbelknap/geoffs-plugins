@@ -1,12 +1,6 @@
 # Geoff's Plugins
 
-A Claude Code plugin marketplace for agent security, Agent Experience reviews, and infrastructure MCP integrations.
-
-Use this marketplace when you want Claude Code to:
-
-- review agent systems against the [ASK Framework](https://askframework.org/)
-- evaluate or refactor CLIs and MCP servers for better Agent Experience
-- connect to [Defined Networking](https://www.defined.net/) / Managed Nebula through MCP
+A Claude Code compatible plugin marketplace for Geoff's hand crafted sustainably harvested plugins, skills and MCPs.
 
 ## Install
 
