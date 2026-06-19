@@ -21,25 +21,20 @@ administration, review, and incident workflows.
 /plugin install limacharlie-mcp@geoffs-plugins
 ```
 
-The MCP servers use `uvx` internally to run the published GitHub package. Do
-the auth setup below before starting a profile or calling LimaCharlie tools.
+The plugin handles running the MCP server. Configure auth once before calling
+LimaCharlie tools.
 
 ## Auth
 
-Use an organization API key first. User API keys are only needed for multi-org
-account discovery.
+You need two values from LimaCharlie: an organization ID and an organization
+API key.
 
-1. Open LimaCharlie and select the organization you want the MCP to manage or
-   review.
-2. Copy the organization ID from either place:
-   - Browser URL: `https://app.limacharlie.io/orgs/<org-id>/...`
-   - Organization Settings -> Access Management -> REST API -> `OID`
-3. On the same REST API page, click `Create API Key`.
-4. Name it something recognizable, such as `limacharlie-mcp`.
-5. Grant only the permissions needed for your first workflow. For a basic
-   read-only smoke test, use `org.get`, `sensor.list`, and `sensor.get`.
-6. Copy the API key secret when LimaCharlie shows it. It is shown once.
-7. Run this command and paste the API key into the hidden prompt:
+1. Open LimaCharlie and choose your organization.
+2. Copy the org ID from the URL: `app.limacharlie.io/orgs/<org-id>/...`.
+3. Go to `Organization Settings` -> `Access Management` -> `REST API`.
+4. Click `Create API Key`, create a key for this MCP, and copy the secret when
+   LimaCharlie shows it.
+5. Run this and paste the API key into the hidden prompt:
 
 ```bash
 uvx --from git+https://github.com/geoffbelknap/limacharlie-mcp \
@@ -47,14 +42,8 @@ uvx --from git+https://github.com/geoffbelknap/limacharlie-mcp \
   --oid "paste-your-org-id-here"
 ```
 
-That starts a managed local Vault for the MCP, stores the API key there, and
-writes nonsecret settings to `~/.config/limacharlie-mcp/config.json`. The
-bundled MCP servers read that file by default. If you store it somewhere else,
-set only `LC_MCP_CONFIG` in your client/plugin config.
-
-For local development only, the underlying MCP also supports
-`LC_SECRET_PROVIDER=env` with `LC_API_KEY`. Do not paste production LimaCharlie
-API keys into plugin configs or commit them to this repository.
+Then start a new Codex or Claude chat with the plugin enabled and call
+`lc_auth_status`.
 
 ## Recommended First Run
 
