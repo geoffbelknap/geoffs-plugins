@@ -29,19 +29,31 @@ uvx --from git+https://github.com/geoffbelknap/limacharlie-mcp limacharlie-mcp-r
 
 ## Auth
 
-Use managed local Vault-backed credentials for deployment. Run the configure
-helper once; it starts and initializes local Vault for the MCP automatically:
+Use an organization API key first. User API keys are only needed for multi-org
+account discovery.
+
+1. Open LimaCharlie and select the organization you want the MCP to manage or
+   review.
+2. Copy the organization ID from either place:
+   - Browser URL: `https://app.limacharlie.io/orgs/<org-id>/...`
+   - Organization Settings -> Access Management -> REST API -> `OID`
+3. On the same REST API page, click `Create API Key`.
+4. Name it something recognizable, such as `limacharlie-mcp`.
+5. Grant only the permissions needed for your first workflow. For a basic
+   read-only smoke test, use `org.get`, `sensor.list`, and `sensor.get`.
+6. Copy the API key secret when LimaCharlie shows it. It is shown once.
+7. Run this command and paste the API key into the hidden prompt:
 
 ```bash
 uvx --from git+https://github.com/geoffbelknap/limacharlie-mcp \
   limacharlie-mcp-configure \
-  --oid "your-limacharlie-org-id"
+  --oid "paste-your-org-id-here"
 ```
 
-That writes the LimaCharlie API key into managed local Vault and writes
-nonsecret settings to `~/.config/limacharlie-mcp/config.json`. The bundled MCP
-servers read that file by default. If you store it somewhere else, set only
-`LC_MCP_CONFIG` in your client/plugin config.
+That starts a managed local Vault for the MCP, stores the API key there, and
+writes nonsecret settings to `~/.config/limacharlie-mcp/config.json`. The
+bundled MCP servers read that file by default. If you store it somewhere else,
+set only `LC_MCP_CONFIG` in your client/plugin config.
 
 For local development only, the underlying MCP also supports
 `LC_SECRET_PROVIDER=env` with `LC_API_KEY`. Do not paste production LimaCharlie
