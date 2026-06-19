@@ -7,7 +7,7 @@ administration, review, and incident workflows.
 
 - Focused MCP profiles: core, fleet, admin, content, detect, contain, evict,
   recover, and review.
-- Vault-first auth and reauth flows from
+- Simple auth and reauth flows from
   [geoffbelknap/limacharlie-mcp](https://github.com/geoffbelknap/limacharlie-mcp).
 - Read-only review/tuning aggregate tools for posture review, fleet health,
   detection noise, content coverage, case backlog, output health, and access

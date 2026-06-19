@@ -1,7 +1,7 @@
 {
   "name": "limacharlie-mcp",
-  "version": "0.1.4",
-  "description": "Standalone LimaCharlie MCP suite with Vault-first auth, focused profiles, bounded review tools, and incident workflow skills.",
+  "version": "0.1.5",
+  "description": "Standalone LimaCharlie MCP suite with simple auth, focused profiles, bounded review tools, and incident workflow skills.",
   "author": {
     "name": "Geoff Belknap"
   },
