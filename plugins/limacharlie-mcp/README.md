@@ -47,17 +47,18 @@ uvx --from git+https://github.com/geoffbelknap/limacharlie-mcp \
   --oid "paste-your-org-id-here"
 ```
 
-Then start a new Codex or Claude chat with the plugin enabled and call
-`lc_auth_status`.
+Then start a new Codex or Claude chat with the plugin enabled and ask:
+"Check my LimaCharlie MCP auth status." The agent should confirm credentials
+are configured without showing secrets.
 
 ## Recommended First Run
 
 After auth setup, start a new Codex or Claude chat with the plugin enabled.
-Use `limacharlie-review` first and call:
+Use the review profile first and ask:
 
-1. `lc_auth_status`
-2. `lc_tool_catalog`
-3. `lc_review_org_posture`
+1. "Check my LimaCharlie MCP auth status."
+2. "Show me which LimaCharlie MCP profile and tools are available."
+3. "Review my LimaCharlie org posture."
 
 Use narrower profiles for operational work:
 
