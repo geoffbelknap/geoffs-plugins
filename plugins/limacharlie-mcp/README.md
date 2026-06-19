@@ -31,55 +31,41 @@ JWTs when tools need API access.
 
 ## Auth
 
-You need two values from LimaCharlie: an organization ID and an organization
-API key.
+You need two values from LimaCharlie: an organization ID and a temporary
+bootstrap API key.
 
-1. Open LimaCharlie and choose your organization.
+1. Open LimaCharlie, log in, and choose your organization.
 2. Copy the org ID from the URL: `app.limacharlie.io/orgs/<org-id>/...`.
-3. Go to `Organization Settings` -> `Access Management` -> `REST API`.
-4. Click `Create API Key` and select permissions for the workflows you want.
-
-   For first run plus read-only posture review, start with:
-
-   ```text
-   org.get
-   sensor.list
-   sensor.get
-   insight.list
-   insight.det.get
-   insight.evt.get
-   insight.stat
-   audit.get
-   output.list
-   dr.list
-   dr.list.managed
-   fp.ctrl
-   yara.get
-   lookup.get
-   ikey.list
-   ingestkey.ctrl
-   user.ctrl
-   apikey.ctrl
-   job.get
-   replicant.get
-   replicant.task
-   ```
-
-   `replicant.task` is needed for complete service-backed content review, such
-   as listing rules managed through LimaCharlie services.
-
-   Add mutation permissions only when you intend to use response, admin, or
-   content-editing workflows. Do not add `live_stream.ctrl`; this MCP does not
-   expose live firehose or streaming telemetry tools.
-5. Create the key for this MCP, and copy the secret when
-   LimaCharlie shows it.
-6. Run this and paste the API key into the hidden prompt:
+3. Open a terminal on the host running your MCP, swap in your org ID where it
+   says `paste-your-org-id-here`, and run this:
 
 ```bash
 uvx --from git+https://github.com/geoffbelknap/limacharlie-mcp \
   limacharlie-mcp-configure \
-  --oid "paste-your-org-id-here"
+  --oid "paste-your-org-id-here" \
+  --provision-runtime-key
 ```
+
+4. The command will print a temporary bootstrap key name and stop at a hidden
+   `LimaCharlie API key secret` prompt. Leave it waiting there.
+5. Go back to your browser and head to `Organization Settings` -> `Access
+   Management` -> `REST API`.
+6. Click `Create API Key`, name it exactly what the command printed, and give it only:
+
+   ```text
+   org.get
+   apikey.ctrl
+   ```
+
+   The setup command uses this temporary key to create one dedicated runtime key
+   named `limacharlie-mcp-runtime`, stores that runtime key in local Vault,
+   and verifies it. It does not print either secret. Do not add
+   `live_stream.ctrl`; this MCP does not expose live firehose or streaming
+   telemetry tools.
+7. Create your bootstrap key and copy the secret from the LimaCharlie dashboard.
+8. Switch back to the terminal and paste the secret into the hidden prompt.
+9. After setup verifies the runtime key, delete the printed bootstrap key from
+   LimaCharlie. The runtime key is already stored in Vault.
 
 Then start a new Codex or Claude chat with the plugin enabled and ask:
 "Check my LimaCharlie MCP auth status." The agent should confirm credentials
