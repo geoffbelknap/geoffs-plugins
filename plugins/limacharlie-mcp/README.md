@@ -29,13 +29,20 @@ uvx --from git+https://github.com/geoffbelknap/limacharlie-mcp limacharlie-mcp-r
 
 ## Auth
 
-Use Vault-backed credentials for deployment. Configure the runtime environment
-with:
+Use Vault-backed credentials for deployment. Run the configure helper once:
 
-- `LC_SECRET_PROVIDER=vault`
-- `LC_VAULT_ADDR`
-- `LC_VAULT_TOKEN_FILE`
-- `LC_API_KEY_REF`
+```bash
+uvx --from git+https://github.com/geoffbelknap/limacharlie-mcp \
+  limacharlie-mcp-configure \
+  --oid "your-limacharlie-org-id" \
+  --vault-addr "https://vault.example.com" \
+  --token-file "$HOME/.vault-token"
+```
+
+That writes the LimaCharlie API key into Vault and writes nonsecret settings to
+`~/.config/limacharlie-mcp/config.json`. The bundled MCP servers read that file
+by default. If you store it somewhere else, set only `LC_MCP_CONFIG` in your
+client/plugin config.
 
 For local development only, the underlying MCP also supports
 `LC_SECRET_PROVIDER=env` with `LC_API_KEY`. Do not paste production LimaCharlie
