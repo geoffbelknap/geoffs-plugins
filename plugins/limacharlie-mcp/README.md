@@ -7,7 +7,7 @@ administration, review, and incident workflows.
 
 - Focused MCP profiles: core, fleet, admin, content, detect, contain, evict,
   recover, and review.
-- Simple auth and reauth flows from
+- Managed local Vault auth and reauth flows from
   [geoffbelknap/limacharlie-mcp](https://github.com/geoffbelknap/limacharlie-mcp).
 - Read-only review/tuning aggregate tools for posture review, fleet health,
   detection noise, content coverage, case backlog, output health, and access
@@ -23,6 +23,11 @@ administration, review, and incident workflows.
 
 The plugin handles running the MCP server. Configure auth once before calling
 LimaCharlie tools.
+
+By default, setup uses managed local Vault so the long-lived LimaCharlie API
+key stays out of chat history, `.env` files, MCP client configuration, and
+audit logs. The MCP uses that protected key to mint short-lived LimaCharlie
+JWTs when tools need API access.
 
 ## Auth
 
