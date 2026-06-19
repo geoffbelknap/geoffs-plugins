@@ -21,11 +21,8 @@ administration, review, and incident workflows.
 /plugin install limacharlie-mcp@geoffs-plugins
 ```
 
-The MCP servers use `uvx` to run the published GitHub package:
-
-```bash
-uvx --from git+https://github.com/geoffbelknap/limacharlie-mcp limacharlie-mcp-review
-```
+The MCP servers use `uvx` internally to run the published GitHub package. Do
+the auth setup below before starting a profile or calling LimaCharlie tools.
 
 ## Auth
 
@@ -61,7 +58,8 @@ API keys into plugin configs or commit them to this repository.
 
 ## Recommended First Run
 
-Start with `limacharlie-review` and call:
+After auth setup, start a new Codex or Claude chat with the plugin enabled.
+Use `limacharlie-review` first and call:
 
 1. `lc_auth_status`
 2. `lc_tool_catalog`
