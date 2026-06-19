@@ -1,0 +1,76 @@
+{
+  "mcpServers": {
+    "limacharlie-core": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/geoffbelknap/limacharlie-mcp",
+        "limacharlie-mcp-core"
+      ]
+    },
+    "limacharlie-fleet": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/geoffbelknap/limacharlie-mcp",
+        "limacharlie-mcp-fleet"
+      ]
+    },
+    "limacharlie-admin": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/geoffbelknap/limacharlie-mcp",
+        "limacharlie-mcp-admin"
+      ]
+    },
+    "limacharlie-content": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/geoffbelknap/limacharlie-mcp",
+        "limacharlie-mcp-content"
+      ]
+    },
+    "limacharlie-detect": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/geoffbelknap/limacharlie-mcp",
+        "limacharlie-mcp-detect"
+      ]
+    },
+    "limacharlie-contain": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/geoffbelknap/limacharlie-mcp",
+        "limacharlie-mcp-contain"
+      ]
+    },
+    "limacharlie-evict": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/geoffbelknap/limacharlie-mcp",
+        "limacharlie-mcp-evict"
+      ]
+    },
+    "limacharlie-recover": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/geoffbelknap/limacharlie-mcp",
+        "limacharlie-mcp-recover"
+      ]
+    },
+    "limacharlie-review": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/geoffbelknap/limacharlie-mcp",
+        "limacharlie-mcp-review"
+      ]
+    }
+  }
+}

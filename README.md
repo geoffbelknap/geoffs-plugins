@@ -16,6 +16,7 @@ Then install the plugin you want:
 /plugin install ask-framework@geoffs-plugins
 /plugin install ax-optimizer@geoffs-plugins
 /plugin install defined-mcp@geoffs-plugins
+/plugin install limacharlie-mcp@geoffs-plugins
 ```
 
 ## Plugins
@@ -54,10 +55,28 @@ Use it to inspect and manage Defined Networking infrastructure, including networ
 
 Set `DEFINED_API_KEY` in your Claude Code or MCP client environment before using this plugin. Do not paste API keys into shell commands or commit them to config files.
 
+### [limacharlie-mcp](./plugins/limacharlie-mcp)
+
+[LimaCharlie](https://limacharlie.io/) MCP suite for security operations agents.
+
+Use it to run focused MCP profiles for auth/core reference, fleet onboarding,
+administration, content maintenance, detection triage, containment, eviction,
+recovery verification, and read-only posture review.
+
+```bash
+/plugin install limacharlie-mcp@geoffs-plugins
+```
+
+Configure LimaCharlie credentials through Vault for deployment. The plugin MCP
+config uses `uvx` and the public
+[geoffbelknap/limacharlie-mcp](https://github.com/geoffbelknap/limacharlie-mcp)
+repository; do not commit API keys or Vault tokens to plugin config.
+
 ## Related Projects
 
 - ASK framework: [github.com/geoffbelknap/ask](https://github.com/geoffbelknap/ask)
 - Defined MCP server: [github.com/geoffbelknap/defined-mcp](https://github.com/geoffbelknap/defined-mcp)
+- LimaCharlie MCP server: [github.com/geoffbelknap/limacharlie-mcp](https://github.com/geoffbelknap/limacharlie-mcp)
 
 Each plugin directory has its own README with details, expected prompts, and setup notes.
 

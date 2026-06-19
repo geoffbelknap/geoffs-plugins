@@ -75,6 +75,31 @@
         "claude-code"
       ],
       "homepage": "https://github.com/geoffbelknap/defined-mcp"
+    },
+    {
+      "name": "limacharlie-mcp",
+      "description": "Standalone LimaCharlie MCP suite with Vault-first auth, focused profiles, bounded review tools, and incident workflow skills for detect, contain, evict, and recover workflows.",
+      "source": "./plugins/limacharlie-mcp",
+      "version": "0.1.0",
+      "author": {
+        "name": "Geoff Belknap"
+      },
+      "category": "security",
+      "keywords": [
+        "mcp",
+        "limacharlie",
+        "security",
+        "incident-response",
+        "detect",
+        "contain",
+        "evict",
+        "recover",
+        "posture-review",
+        "detection-tuning",
+        "vault",
+        "agents"
+      ],
+      "homepage": "https://github.com/geoffbelknap/limacharlie-mcp"
     }
   ]
 }
